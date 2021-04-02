@@ -18,7 +18,7 @@ Initialize a global dictionary of images. This is called exactly once in main.
 
 
 def load_images():
-    pieces = ['wp', 'wR', 'wN', 'wB', 'wQ', 'wK', 'bp', 'bR', 'bK', 'bB', 'bQ', 'bK']
+    pieces = ['wp', 'wR', 'wN', 'wB', 'wQ', 'wK', 'bp', 'bR', 'bN', 'bB', 'bQ', 'bK']
     for piece in pieces:
         IMAGES[piece] = p.transform.scale(p.image.load("images/" + piece + ".png"), (SQ_SIZE, SQ_SIZE))
     # Note: we can access an image by saying 'IMAGES['wp']'
@@ -54,23 +54,29 @@ def main():
             # to quit game
             if e.type == p.QUIT:
                 running = False
-        draw_game_state(screen,gs)
+        draw_game_state(screen, gs)
         clock.tick(MAX_FPS)
         p.display.flip()
+
 
 """
 Responsible for all the graphics within a current game state.
 """
-def draw_game_state(screen,gs):
+
+
+def draw_game_state(screen, gs):
     # draws the squares on the board
     draw_board(screen)
     # draw pieces on top of those squares
     # can add in piece highlighting or move suggestions later
-    draw_pieces(screen,gs.board)
+    draw_pieces(screen, gs.board)
+
 
 """
 Draws the squares on the board. Top left square is always white, bottom right square as well.
 """
+
+
 def draw_board(screen):
     # two colors picked for chess board, white and grey, not black because the pieces will be hard to see
     colors = [p.Color("white"), p.Color("grey")]
@@ -79,18 +85,22 @@ def draw_board(screen):
         for c in range(DIMENSION):
             # gives us the remainder and tells us whether the square is even or odd
             # white squares are even (remainder 0) , dark squares are odd (remainder 1)
-            color = colors[((r+c) % 2)]
-            p.draw.rect(screen, color, p.Rect(c*SQ_SIZE, r*SQ_SIZE, SQ_SIZE, SQ_SIZE))
-
-
-
+            color = colors[((r + c) % 2)]
+            p.draw.rect(screen, color, p.Rect(c * SQ_SIZE, r * SQ_SIZE, SQ_SIZE, SQ_SIZE))
 
 
 """
 Draws the pieces on the board using the current game states board variable (GameState.board)
 """
+
+
 def draw_pieces(screen, board):
-    pass
+    for r in range(DIMENSION):
+        for c in range(DIMENSION):
+            piece = board[r][c]
+            if piece != "--":  # not an empty square
+                screen.blit(IMAGES[piece], p.Rect(c * SQ_SIZE, r * SQ_SIZE, SQ_SIZE, SQ_SIZE))
+
 
 if __name__ == "__main__":
     main()
