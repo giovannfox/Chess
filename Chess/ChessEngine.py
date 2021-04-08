@@ -49,6 +49,80 @@ class GameState:
             self.board[move.end_row][move.end_col] = move.piece_captured
             self.white_to_move = not self.white_to_move  # switch turns back
 
+    """
+    All moved considering checks
+    """
+
+    def get_valid_moves(self):
+        return self.get_all_possible_moves()  # will modify later to account for checking
+
+    """
+    All moves without considering checks
+    """
+
+    def get_all_possible_moves(self):
+        moves = [Move((6, 4), (4, 4), self.board)]
+        for r in range(len(self.board)):  # number of rows
+            for c in range(len(self.board[r])):  # number of columns in given row
+                turn = self.board[r][c][0]
+                if (turn == 'w' and self.white_to_move) and (turn == 'b' and not self.white_to_move):
+                    piece = self.board[r][c][1]
+                    if piece == 'p':
+                        self.get_pawn_moves(r, c, moves)
+                    elif piece == 'R':
+                        self.get_rook_moves(r, c, moves)
+                    elif piece == 'N':
+                        self.get_rook_moves(r, c, moves)
+                    elif piece == 'B':
+                        self.get_rook_moves(r, c, moves)
+                    elif piece == 'Q':
+                        self.get_rook_moves(r, c, moves)
+                    elif piece == 'K':
+                        self.get_rook_moves(r, c, moves)
+        return moves
+
+    """
+    Get all the pawn moves for the pawn located at row, column and add these moves to the list
+    """
+
+    def get_pawn_moves(self, r, c, moves):
+        pass
+
+    """
+    Get all the rook moves for the pawn located at row, column and add these moves to the list
+    """
+
+    def get_rook_moves(self, r, c, moves):
+        pass
+
+    """
+    Get all the knight moves for the pawn located at row, column and add these moves to the list
+    """
+
+    def get_knight_moves(self, r, c, moves):
+        pass
+
+    """
+    Get all the bishop moves for the pawn located at row, column and add these moves to the list
+    """
+
+    def get_bishop_moves(self, r, c, moves):
+        pass
+
+    """
+    Get all the queen moves for the pawn located at row, column and add these moves to the list
+    """
+
+    def get_queen_moves(self, r, c, moves):
+        pass
+
+    """
+    Get all the king moves for the pawn located at row, column and add these moves to the list
+    """
+
+    def get_king_moves(self, r, c, moves):
+        pass
+
 
 class Move:
     # dictionary that maps keys to value
@@ -66,6 +140,17 @@ class Move:
         self.end_col = end_sq[1]
         self.piece_moved = board[self.start_row][self.start_col]
         self.piece_captured = board[self.end_row][self.end_col]
+        self.move_id = self.start_row * 1000 + self.start_col * 100 + self.end_row * 10 + self.end_col
+        print(self.move_id)
+
+    """"
+    Overriding the equals method
+    """
+
+    def __eq__(self, other):
+        if isinstance(other, Move):
+            return self.move_id == other.move_id
+        return False
 
     def get_chess_notation(self):
         # I can add to make it real chess notation later, atm this is rank/file notation

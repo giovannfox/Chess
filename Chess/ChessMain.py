@@ -41,6 +41,8 @@ def main():
     screen.fill(p.Color("white"))
     # create game state, gives access to variables in ChessEngine like board for example
     gs = ChessEngine.GameState()
+    valid_moves = gs.get_valid_moves()
+    move_made = False  # flag variable for when a move is made
 
     # example to print chess board
     # print(gs.board)
@@ -71,7 +73,9 @@ def main():
                 if len(player_clicks) == 2:  # after 2nd click
                     move = ChessEngine.Move(player_clicks[0], player_clicks[1], gs.board)
                     print(move.get_chess_notation())
-                    gs.make_move(move)
+                    if move in valid_moves:
+                        gs.make_move(move)
+                        move_made = True
                     # reset user clicks and square
                     sq_selected = ()
                     player_clicks = []
@@ -79,6 +83,11 @@ def main():
             elif e.type == p.KEYDOWN:
                 if e.key == p.K_z:  # undo when 'z' is pressed
                     gs.undo_move()
+                    move_made = True
+
+        if move_made:
+            valid_moves = gs.get_valid_moves()
+            move_made = False
 
         draw_game_state(screen, gs)
         clock.tick(MAX_FPS)
