@@ -57,6 +57,7 @@ def main():
             if e.type == p.QUIT:
                 running = False
             # if event type is mouse click, later I will add dragging pieces
+            # mouse handler
             elif e.type == p.MOUSEBUTTONDOWN:
                 location = p.mouse.get_pos()  # (x,y) location of mouse
                 col = location[0]//SQ_SIZE
@@ -74,6 +75,10 @@ def main():
                     # reset user clicks and square
                     sq_selected = ()
                     player_clicks = []
+            # key handlers
+            elif e.type == p.KEYDOWN:
+                if e.key == p.K_z:  # undo when 'z' is pressed
+                    gs.undo_move()
 
         draw_game_state(screen, gs)
         clock.tick(MAX_FPS)

@@ -28,11 +28,26 @@ class GameState:
         # field that keeps track of what moves have currently taken place
         self.moveLog = []
 
+    """
+    Takes a Move as a parameter and executes it. (this does not work for castling, pawn promotion and en-passant)
+    """
+
     def make_move(self, move):
         self.board[move.start_row][move.start_col] = "--"  # when we move a piece we leave behind an empty space
         self.board[move.end_row][move.end_col] = move.piece_moved  # moves piece to ending position
         self.moveLog.append(move)  # can log the moves to be able to undo them later, or display the history of moves
-        self.white_to_move = not self.white_to_move  # switch turns, now blacks turn
+        self.white_to_move = not self.white_to_move  # switch turns
+
+    """
+    Undo the last move made
+    """
+
+    def undo_move(self):
+        if len(self.moveLog) != 0:  # make sure that there is a move to undo or else it will throw an error
+            move = self.moveLog.pop()
+            self.board[move.start_row][move.start_col] = move.piece_moved
+            self.board[move.end_row][move.end_col] = move.piece_captured
+            self.white_to_move = not self.white_to_move  # switch turns back
 
 
 class Move:
