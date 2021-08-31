@@ -101,38 +101,55 @@ class GameState:
             if c + 1 <= 7:  # captures to the right
                 if self.board[r + 1][c + 1][0] == 'w':  # enemy piece to capture
                     moves.append(Move((r, c), (r + 1, c + 1), self.board))
+        # add pawn promotions later
 
 
     """
-    Get all the rook moves for the pawn located at row, column and add these moves to the list
+    Get all the rook moves for the rook located at row, column and add these moves to the list
     """
 
     def get_rook_moves(self, r, c, moves):
-        pass
+        directions = ((-1, 0), (0, -1), (1, 0), (0, 1))  # up, left, down, right
+        enemy_color = 'b' if self.white_to_move else 'w'
+        for d in directions:
+            for i in range(1,8):
+                end_row = r + d[0] * i
+                end_col = c + d[1] * i
+                if 0 <= end_row < 8 and 0 <= end_col < 8:  # on board
+                    end_piece = self.board[end_row][end_col]
+                    if end_piece == '--':  # empty space valid
+                        moves.append(Move((r, c), (end_row, end_col), self.board))
+                    elif end_piece[0] == enemy_color:  # enemy piece valid
+                        moves.append(Move((r, c), (end_row, end_col), self.board))
+                        break
+                    else:  # friendly piece invalid
+                        break
+                else:  # off board
+                    break
 
     """
-    Get all the knight moves for the pawn located at row, column and add these moves to the list
+    Get all the knight moves for the knight located at row, column and add these moves to the list
     """
 
     def get_knight_moves(self, r, c, moves):
         pass
 
     """
-    Get all the bishop moves for the pawn located at row, column and add these moves to the list
+    Get all the bishop moves for the bishop located at row, column and add these moves to the list
     """
 
     def get_bishop_moves(self, r, c, moves):
         pass
 
     """
-    Get all the queen moves for the pawn located at row, column and add these moves to the list
+    Get all the queen moves for the queen located at row, column and add these moves to the list
     """
 
     def get_queen_moves(self, r, c, moves):
         pass
 
     """
-    Get all the king moves for the pawn located at row, column and add these moves to the list
+    Get all the king moves for the king located at row, column and add these moves to the list
     """
 
     def get_king_moves(self, r, c, moves):
