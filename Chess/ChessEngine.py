@@ -170,7 +170,10 @@ class GameState:
     """
 
     def get_queen_moves(self, r, c, moves):
-        pass
+        self.get_rook_moves(r, c, moves)
+        self.get_bishop_moves(r, c, moves)
+        #  perfect example of abstraction, hide the details of implementation
+        #  in order to reduce complexity and increase efficiency
 
     """
     Get all the king moves for the king located at row, column and add these moves to the list
