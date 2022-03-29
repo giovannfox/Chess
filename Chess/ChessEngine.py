@@ -31,6 +31,10 @@ class GameState:
         # field that keeps track of what moves have currently taken place
         self.move_log = []
 
+        # track location of kings
+        self.white_king_location = (7, 4)
+        self.black_king_location = (0, 4)
+
     """
     Takes a Move as a parameter and executes it. (this does not work for castling, pawn promotion and en-passant)
     """
